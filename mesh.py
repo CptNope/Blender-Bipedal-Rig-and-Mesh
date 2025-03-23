@@ -128,3 +128,138 @@ bpy.context.view_layer.objects.active = rig_obj
 bpy.ops.object.parent_set(type='ARMATURE_AUTO')
 
 print("Aligned human mesh created and parented to the rig!")
+
+# ========================================================
+# Revised Animation Section with Adjusted Shoulders and Knees
+# ========================================================
+def set_bone_rotation(pose_bones, bone_name, frame, rotation_euler, rotation_order='XYZ'):
+    bone = pose_bones.get(bone_name)
+    if bone is None:
+        print(f"Warning: Bone '{bone_name}' not found in rig.")
+        return
+    bone.rotation_mode = rotation_order
+    bone.rotation_euler = rotation_euler
+    bone.keyframe_insert(data_path="rotation_euler", frame=frame)
+
+# Switch to Pose mode on the rig for animation
+bpy.context.view_layer.objects.active = rig_obj
+bpy.ops.object.mode_set(mode='POSE')
+pose_bones = rig_obj.pose.bones
+
+# ---------------------------------------------------
+# Revised Walk Cycle (frames 1 to 25)
+# The knee (thigh/shin) angles and shoulder (upper arm) rotations have been adjusted.
+# ---------------------------------------------------
+# Frame 1: Left leg forward (knee more bent) and right leg extended
+set_bone_rotation(pose_bones, "Pelvis", 1, (math.radians(5), 0, 0))
+set_bone_rotation(pose_bones, "Left_Thigh", 1, (math.radians(25), 0, 0))
+set_bone_rotation(pose_bones, "Left_Shin", 1, (math.radians(-20), 0, 0))
+set_bone_rotation(pose_bones, "Right_Thigh", 1, (math.radians(-5), 0, 0))
+set_bone_rotation(pose_bones, "Right_Shin", 1, (math.radians(5), 0, 0))
+# Shoulders: moderate swing
+set_bone_rotation(pose_bones, "Left_Upper_Arm", 1, (math.radians(-15), 0, 0))
+set_bone_rotation(pose_bones, "Right_Upper_Arm", 1, (math.radians(15), 0, 0))
+
+# Frame 13: Opposite pose: now right leg forward with more bend and left leg extended
+set_bone_rotation(pose_bones, "Pelvis", 13, (math.radians(-5), 0, 0))
+set_bone_rotation(pose_bones, "Left_Thigh", 13, (math.radians(-5), 0, 0))
+set_bone_rotation(pose_bones, "Left_Shin", 13, (math.radians(5), 0, 0))
+set_bone_rotation(pose_bones, "Right_Thigh", 13, (math.radians(25), 0, 0))
+set_bone_rotation(pose_bones, "Right_Shin", 13, (math.radians(-20), 0, 0))
+# Shoulders swap swing direction
+set_bone_rotation(pose_bones, "Left_Upper_Arm", 13, (math.radians(15), 0, 0))
+set_bone_rotation(pose_bones, "Right_Upper_Arm", 13, (math.radians(-15), 0, 0))
+
+# Frame 25: Return to initial pose
+set_bone_rotation(pose_bones, "Pelvis", 25, (math.radians(5), 0, 0))
+set_bone_rotation(pose_bones, "Left_Thigh", 25, (math.radians(25), 0, 0))
+set_bone_rotation(pose_bones, "Left_Shin", 25, (math.radians(-20), 0, 0))
+set_bone_rotation(pose_bones, "Right_Thigh", 25, (math.radians(-5), 0, 0))
+set_bone_rotation(pose_bones, "Right_Shin", 25, (math.radians(5), 0, 0))
+set_bone_rotation(pose_bones, "Left_Upper_Arm", 25, (math.radians(-15), 0, 0))
+set_bone_rotation(pose_bones, "Right_Upper_Arm", 25, (math.radians(15), 0, 0))
+
+# ---------------------------------------------------
+# Revised Run Cycle (frames 30 to 48)
+# More exaggerated poses with adjusted knee and shoulder rotations.
+# ---------------------------------------------------
+# Frame 30: Start run pose
+set_bone_rotation(pose_bones, "Pelvis", 30, (math.radians(10), 0, 0))
+set_bone_rotation(pose_bones, "Left_Thigh", 30, (math.radians(45), 0, 0))
+set_bone_rotation(pose_bones, "Left_Shin", 30, (math.radians(-25), 0, 0))
+set_bone_rotation(pose_bones, "Right_Thigh", 30, (math.radians(-5), 0, 0))
+set_bone_rotation(pose_bones, "Right_Shin", 30, (math.radians(5), 0, 0))
+set_bone_rotation(pose_bones, "Left_Upper_Arm", 30, (math.radians(-35), 0, 0))
+set_bone_rotation(pose_bones, "Right_Upper_Arm", 30, (math.radians(35), 0, 0))
+
+# Frame 39: Mid-run pose with legs swapping roles
+set_bone_rotation(pose_bones, "Pelvis", 39, (math.radians(-10), 0, 0))
+set_bone_rotation(pose_bones, "Left_Thigh", 39, (math.radians(-5), 0, 0))
+set_bone_rotation(pose_bones, "Left_Shin", 39, (math.radians(5), 0, 0))
+set_bone_rotation(pose_bones, "Right_Thigh", 39, (math.radians(45), 0, 0))
+set_bone_rotation(pose_bones, "Right_Shin", 39, (math.radians(-25), 0, 0))
+set_bone_rotation(pose_bones, "Left_Upper_Arm", 39, (math.radians(35), 0, 0))
+set_bone_rotation(pose_bones, "Right_Upper_Arm", 39, (math.radians(-35), 0, 0))
+
+# Frame 48: Loop back to the start of run pose
+set_bone_rotation(pose_bones, "Pelvis", 48, (math.radians(10), 0, 0))
+set_bone_rotation(pose_bones, "Left_Thigh", 48, (math.radians(45), 0, 0))
+set_bone_rotation(pose_bones, "Left_Shin", 48, (math.radians(-25), 0, 0))
+set_bone_rotation(pose_bones, "Right_Thigh", 48, (math.radians(-5), 0, 0))
+set_bone_rotation(pose_bones, "Right_Shin", 48, (math.radians(5), 0, 0))
+set_bone_rotation(pose_bones, "Left_Upper_Arm", 48, (math.radians(-35), 0, 0))
+set_bone_rotation(pose_bones, "Right_Upper_Arm", 48, (math.radians(35), 0, 0))
+
+# ---------------------------------------------------
+# Revised Jump Cycle (frames 60 to 80)
+# Adjusted crouch and recovery with more dynamic knee bends.
+# ---------------------------------------------------
+# Frame 60: Crouch before jump
+set_bone_rotation(pose_bones, "Pelvis", 60, (math.radians(-15), 0, 0))
+set_bone_rotation(pose_bones, "Left_Thigh", 60, (math.radians(-50), 0, 0))
+set_bone_rotation(pose_bones, "Left_Shin", 60, (math.radians(30), 0, 0))
+set_bone_rotation(pose_bones, "Right_Thigh", 60, (math.radians(-50), 0, 0))
+set_bone_rotation(pose_bones, "Right_Shin", 60, (math.radians(30), 0, 0))
+set_bone_rotation(pose_bones, "Left_Upper_Arm", 60, (math.radians(25), 0, 0))
+set_bone_rotation(pose_bones, "Right_Upper_Arm", 60, (math.radians(-25), 0, 0))
+
+# Frame 65: Takeoff – legs extend
+set_bone_rotation(pose_bones, "Pelvis", 65, (math.radians(0), 0, 0))
+set_bone_rotation(pose_bones, "Left_Thigh", 65, (math.radians(0), 0, 0))
+set_bone_rotation(pose_bones, "Left_Shin", 65, (math.radians(0), 0, 0))
+set_bone_rotation(pose_bones, "Right_Thigh", 65, (math.radians(0), 0, 0))
+set_bone_rotation(pose_bones, "Right_Shin", 65, (math.radians(0), 0, 0))
+set_bone_rotation(pose_bones, "Left_Upper_Arm", 65, (math.radians(-10), 0, 0))
+set_bone_rotation(pose_bones, "Right_Upper_Arm", 65, (math.radians(10), 0, 0))
+
+# Frame 70: Mid-air pose – knees slightly bent for clearance, arms raised
+set_bone_rotation(pose_bones, "Pelvis", 70, (math.radians(10), 0, 0))
+set_bone_rotation(pose_bones, "Left_Thigh", 70, (math.radians(30), 0, 0))
+set_bone_rotation(pose_bones, "Left_Shin", 70, (math.radians(-20), 0, 0))
+set_bone_rotation(pose_bones, "Right_Thigh", 70, (math.radians(30), 0, 0))
+set_bone_rotation(pose_bones, "Right_Shin", 70, (math.radians(-20), 0, 0))
+set_bone_rotation(pose_bones, "Left_Upper_Arm", 70, (math.radians(40), 0, 0))
+set_bone_rotation(pose_bones, "Right_Upper_Arm", 70, (math.radians(40), 0, 0))
+
+# Frame 75: Landing pose – legs bend to absorb impact
+set_bone_rotation(pose_bones, "Pelvis", 75, (math.radians(0), 0, 0))
+set_bone_rotation(pose_bones, "Left_Thigh", 75, (math.radians(-20), 0, 0))
+set_bone_rotation(pose_bones, "Left_Shin", 75, (math.radians(20), 0, 0))
+set_bone_rotation(pose_bones, "Right_Thigh", 75, (math.radians(-20), 0, 0))
+set_bone_rotation(pose_bones, "Right_Shin", 75, (math.radians(20), 0, 0))
+set_bone_rotation(pose_bones, "Left_Upper_Arm", 75, (math.radians(0), 0, 0))
+set_bone_rotation(pose_bones, "Right_Upper_Arm", 75, (math.radians(0), 0, 0))
+
+# Frame 80: Recovery to standing pose
+set_bone_rotation(pose_bones, "Pelvis", 80, (math.radians(0), 0, 0))
+set_bone_rotation(pose_bones, "Left_Thigh", 80, (math.radians(0), 0, 0))
+set_bone_rotation(pose_bones, "Left_Shin", 80, (math.radians(0), 0, 0))
+set_bone_rotation(pose_bones, "Right_Thigh", 80, (math.radians(0), 0, 0))
+set_bone_rotation(pose_bones, "Right_Shin", 80, (math.radians(0), 0, 0))
+set_bone_rotation(pose_bones, "Left_Upper_Arm", 80, (math.radians(0), 0, 0))
+set_bone_rotation(pose_bones, "Right_Upper_Arm", 80, (math.radians(0), 0, 0))
+
+# Return to Object mode when finished
+bpy.ops.object.mode_set(mode='OBJECT')
+
+print("Aligned human mesh created, parented to the rig, and revised animations added!")
